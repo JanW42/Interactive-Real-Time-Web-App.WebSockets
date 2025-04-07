@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#header {
+  position: fixed; /* fixiert oben beim Scrollen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #1e1e1e; /* etwas dunkleres Grau */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 10;
+
+  /* heller Schatten nach unten als Übergang */
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.05);
+}
+
+#logofhmuenster {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 300px;      /* oder eine andere passende Größe */
+  height: 47px;
+  z-index: 10;       /* damit es über anderen Elementen liegt */
+}
+#logogithub {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  width: 50px;      /* oder eine andere passende Größe */
+  height: 50px;
+  z-index: 10;       /* damit es über anderen Elementen liegt */
+}
+
+#messages {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 600px;
+  padding: 0 20px;
+  z-index: 10; /* sicherstellen, dass es über dem Canvas liegt */
+}
+
+.message {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: rgba(63, 63, 63, 0.700);
+  color: whitesmoke;
+  left: 0%;
+  text-align: center;
+  width: 600px;
+  font-size: 16px;
+  opacity: 1;
+  transition: opacity 0.4s, color 0.4s;
+
+  max-width: 200px;          /* Begrenzung auf 200px */
+  white-space: nowrap;       /* Kein Zeilenumbruch */
+  overflow: hidden;          /* Alles, was übersteht, wird ausgeblendet */
+  text-overflow: ellipsis;   /* Statt abgeschnittenem Text wird "…" angezeigt */
+}
+

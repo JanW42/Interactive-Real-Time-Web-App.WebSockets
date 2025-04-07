@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>AI_Project</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <img src="{{ url_for('static', filename='FH Muenster.png') }}" alt="FH Münster Logo" id="logofhmuenster">
+    <img src="{{ url_for('static', filename='Github.png') }}" alt="Github Logo" id="logogithub">
+</head>
+<body>
+
+    <div id="messages"></div>
+
+    <script>
+        const socket = io();
+        const container = document.getElementById("messages");
+
+        socket.on("connect", () => {
+            console.log("Verbunden mit Server");
+        });
+
+        socket.on("new_message", (data) => {
+            const msg = document.createElement("div");
+            msg.classList.add("message");
+            msg.textContent = data.text;
+
+            container.appendChild(msg);
+
+            const all = container.querySelectorAll(".message");
+
+            // Wenn mehr als 5 Nachrichten, die älteste entfernen
+            if (all.length >= 6) {
+                container.removeChild(all[0]);
+            }
+        });
+    </script>
+</body>
+</html>
