@@ -15,13 +15,8 @@ body {
   left: 0;
   width: 100%;
   height: 80px;
-  background-color: #1e1e1e; /* etwas dunkleres Grau */
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 20px;
-  z-index: 10;
-
+  background-color: #010409; /* etwas dunkleres Grau */
+  border-bottom: 1px solid #30363d; /* dezente graue Linie */
   /* heller Schatten nach unten als Übergang */
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.05);
 }
@@ -38,8 +33,8 @@ body {
   position: absolute;
   top: 10px;
   left: 20px;
-  width: 50px;      /* oder eine andere passende Größe */
-  height: 50px;
+  width: 160px;      /* oder eine andere passende Größe */
+  height: 60px;
   z-index: 10;       /* damit es über anderen Elementen liegt */
 }
 
@@ -52,7 +47,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  width: 100%;
+  width: 300px;
   max-width: 600px;
   padding: 0 20px;
   z-index: 10; /* sicherstellen, dass es über dem Canvas liegt */
@@ -61,7 +56,7 @@ body {
 .message {
   padding: 10px 16px;
   border-radius: 8px;
-  background-color: rgba(63, 63, 63, 0.700);
+  background-color: #0D1117;
   color: whitesmoke;
   left: 0%;
   text-align: center;
@@ -74,5 +69,79 @@ body {
   white-space: nowrap;       /* Kein Zeilenumbruch */
   overflow: hidden;          /* Alles, was übersteht, wird ausgeblendet */
   text-overflow: ellipsis;   /* Statt abgeschnittenem Text wird "…" angezeigt */
+}
+
+ /* Canvas exakt oben und zentriert */
+ #ai-canvas {
+  position: absolute;
+  top: -250px;                 /* wie weit oben*/
+  left: 50%;              /* horizontal mittig */
+  transform: translateX(-50%);  /* exakt mittig zentrieren */
+  width: 800px;           /* oder 100% / responsive */
+  height: 400px;          /* je nach gewünschter Höhe */
+  display: block;
+  z-index: 1;
+}
+
+/* Basis-Styling für den Button */
+.holo-button {
+  position: fixed;
+  bottom: 50px;
+  left: 22px;
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  border: 2px solid #666;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  z-index: 1000;
+}
+
+/* Hover: leuchtendes Orange */
+.holo-button:hover {
+  background-color: #BC5C00;
+  box-shadow: 0 0 12px #BC5C00;
+  border-color: #BC5C00;
+}
+
+/* Klick-Animation */
+.holo-button:active {
+  transform: scale(1.1);
+}
+
+/* Gemeinsames Icon-Styling */
+.holo-button .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ▶️ Play-Symbol (Dreieck) */
+.holo-button .play {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent white;
+  margin-left: 4px;
+}
+
+/* ⏸ Pause-Symbol (2 Balken) */
+.holo-button .pause {
+  gap: 5px;
+}
+
+.holo-button .pause::before,
+.holo-button .pause::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 20px;
+  background-color: white;
+  border-radius: 1px;
 }
 

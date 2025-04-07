@@ -1,6 +1,6 @@
 import asyncio
 from quart import Quart, render_template
-import socketio
+import socketio #pip install python-socketio
 
 # Socket.IO Server (async)
 sio = socketio.AsyncServer(async_mode="asgi")
@@ -24,7 +24,7 @@ async def send_messages(sid):
         await sio.emit("new_message", message, to=sid)
         print(f"📤 Sende: {message}")
         count += 1
-        await asyncio.sleep(1)
+        await asyncio.sleep(5)
 
 if __name__ == "__main__":
     import uvicorn
