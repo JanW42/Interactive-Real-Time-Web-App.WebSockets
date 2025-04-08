@@ -12,10 +12,12 @@ import time
 # Queues & Steuerung
 sample_queue = queue.Queue()
 volume_queue = queue.Queue()
+message_queue = asyncio.Queue()
 audio_task_event = threading.Event()
 terminate_signal = threading.Event()
-send_messages_flag = threading.Event()
 current_audio_file = "output.mp3"
+
+main_event_loop = None
 
 # Quart + Socket.IO Setup
 sio = socketio.AsyncServer(async_mode="asgi")
@@ -27,23 +29,52 @@ async def index():
     return await render_template("index.html")
 
 @sio.event
-async def connect(sid, environ):
+async def connect(sid, environm, auth=None):
+    global main_event_loop
+    main_event_loop = asyncio.get_running_loop()
     print(f"🔌 Client verbunden: {sid}")
     asyncio.create_task(send_messages(sid))
     asyncio.create_task(send_volume_updates(sid))
     print("🚀 Starte Hintergrund-Threads...")
+    send_message("🚀 Starte Hintergrund-Threads..")
+    send_message(f"🔌 Client verbunden: {sid}")
     threading.Thread(target=audio_playback_thread, daemon=True).start()
     threading.Thread(target=volume_analysis_thread, daemon=True).start()
     threading.Thread(target=monitor_input_file, daemon=True).start()
 
+# Funktion, die du synchron im Code aufrufen kannst
+def send_message(text: str):
+    global main_event_loop
+    if not main_event_loop:
+        print("❌ Kein Eventloop gesetzt")
+        return
+
+    try:
+        if threading.current_thread() is threading.main_thread():
+            # Wenn wir im Eventloop-Thread sind: über create_task()
+            main_event_loop.create_task(message_queue.put(text))
+        else:
+            # In anderem Thread: run_coroutine_threadsafe
+            asyncio.run_coroutine_threadsafe(message_queue.put(text), main_event_loop)
+        print(f"📝 Nachricht eingereiht: {text}")
+    except Exception as e:
+        print(f"❌ Fehler beim Einreihen: {e}")
+    
+# Nachrichten an den Socket.IO-Client senden
 async def send_messages(sid):
-    count = 1
-    while not terminate_signal.is_set():
-        message = {"text": f"Nachricht #{count}"}
-        await sio.emit("new_message", message, to=sid)
-        print(f"📤 Sende: {message}")
-        count += 1
-        await asyncio.sleep(1)
+    print(f"📡 Starte Nachrichtensender für Client {sid}")
+    while True:
+        try:
+            # Hole nächste Nachricht (wartet async)
+            message = await message_queue.get()
+            print(f"📤 Sende an Client {sid}: {message}")
+            await sio.emit("new_message", {"text": message}, to=sid)
+        except asyncio.CancelledError:
+            print(f"🛑 Nachrichtensender für {sid} wurde gestoppt (Cancelled)")
+            break  # Bei Abbruch durch Task-Stop o.ä.
+        except Exception as e:
+            print(f"❌ Fehler in send_messages({sid}): {e}")
+        await asyncio.sleep(0.1)  # Eventloop schonen
  
 async def send_volume_updates(sid):
     while not terminate_signal.is_set():
@@ -52,12 +83,12 @@ async def send_volume_updates(sid):
         except queue.Empty:
             continue
         await sio.emit("volume_update", {"volume": volume}, to=sid)
+        #send_message(f"Volume input sendet {volume}")
 
 # Thread: Audio abspielen und auf neue Input.mp3 warten
 def audio_playback_thread():
     global current_audio_file
     while not terminate_signal.is_set():
-        print ("Warte")
         audio_task_event.wait()
         #if not os.path.exists(current_audio_file):
         #    time.sleep(1)
@@ -87,12 +118,13 @@ def audio_playback_thread():
             process.kill()
             stream.stop()
             stream.close()
+            send_message("Wiedergabe beendet")
             print("⏹️ Wiedergabe beendet.")
 
         # Wenn Input.mp3 gespielt wurde, löschen und wieder auf neue warten
         if current_audio_file == "input.mp3":
             try:
-                #os.remove("input.mp3")
+                os.remove("input.mp3")
                 print("🗑️ input.mp3 gelöscht")
             except Exception as e:
                 print(f"⚠️ Fehler beim Löschen: {e}")
@@ -121,8 +153,9 @@ def monitor_input_file():
     while True:
         if os.path.exists("input.mp3") and not audio_task_event.is_set(): #Nur wenn es eine Input.mp3 gibt und der audio_task_thread nicht läuft dann:
             current_audio_file = "input.mp3"
+            send_message("starte Wiedergabe")
             print("📥 Neue input.mp3 erkannt – starte Wiedergabe")
-            #audio_task_event.set() #Hier wird der Thread starte Wiedergabe Audio ausgeführt
+            audio_task_event.set() #Hier wird der Thread starte Wiedergabe Audio ausgeführt
 
         time.sleep(1) # warte 1 Sekunde bevor geguckt wird ob es eine Input.mp3 gibt.
 

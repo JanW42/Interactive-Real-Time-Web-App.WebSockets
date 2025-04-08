@@ -65,7 +65,7 @@ body {
   opacity: 1;
   transition: opacity 0.4s, color 0.4s;
 
-  max-width: 200px;          /* Begrenzung auf 200px */
+  max-width: 600px;          /* Begrenzung auf 200px */
   white-space: nowrap;       /* Kein Zeilenumbruch */
   overflow: hidden;          /* Alles, was übersteht, wird ausgeblendet */
   text-overflow: ellipsis;   /* Statt abgeschnittenem Text wird "…" angezeigt */
