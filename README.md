@@ -6,7 +6,7 @@
 Python backend, HTML / Css / Javaskript Frontend
 Imformationsaustausch mit socketio, render html mit Quart asyncron
 
-![Image](https://github.com/user-attachments/assets/e8757793-3358-46bd-b524-ead8d1421250)
+![Image](https://github.com/user-attachments/assets/765ef382-9ba0-4694-8ab2-6b7f212ed2aa)
 
 ## Requirements
 > [!IMPORTANT]
