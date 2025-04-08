@@ -17,7 +17,7 @@ Imformationsaustausch mit socketio, render html mit Quart asyncron
 > Press (Shift+right Mouse) here you want the Folder -> open Powershell Window here.
 
 ```bash
-git clone https://github.com/JanW42/AI_Project.git
+git clone https://github.com/JanW42/Websocket.git
 cd Websocket
 ```
 **3. Create and activate a virtual environment (optional but recommended)**:
