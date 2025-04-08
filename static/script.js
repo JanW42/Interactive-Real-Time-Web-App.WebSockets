@@ -43,7 +43,7 @@ light.position.set(0, 0, 5);
 scene.add(light);
 
 // Innerer Kern
-const innerSphereGeometry = new THREE.SphereGeometry(1.2, 64, 64);
+const innerSphereGeometry = new THREE.SphereGeometry(1.4, 64, 64);
 const innerSphereMaterial = new THREE.MeshPhongMaterial({
   color: 0xffa500,
   transparent: true,
@@ -136,6 +136,13 @@ const clock = new THREE.Clock();
 const v0 = new THREE.Vector3();
 const v1 = new THREE.Vector3();
 
+let volumeFactor = 0.02; // default fallback
+
+socket.on("volume_update", (data) => {
+  volumeFactor = 0.02 + data.volume * 0.4; // 0.5 skaliert mit Lautstärke
+});
+
+
 function animate() {
   requestAnimationFrame(animate);
   const delta = clock.getDelta();
@@ -150,7 +157,7 @@ function animate() {
   });
 
   // Pulsierender innerer Kern
-  const pulseScale = 1 + Math.sin(elapsed * 3) * 0.02;
+  const pulseScale = 1 + Math.sin(elapsed * 2) * volumeFactor;
   innerSphere.scale.set(pulseScale, pulseScale, pulseScale);
 
   fragments.forEach((frag, i) => {
