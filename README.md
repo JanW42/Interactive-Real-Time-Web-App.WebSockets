@@ -3,8 +3,8 @@
 [![GitHub Issues](https://pypi-camo.freetls.fastly.net/52bea5a66ac819c8d1c22a8ef9f2075d7b153a03/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f69737375655f747261636b696e672d6769746875622d626c75652e737667)](https://github.com/JanW42/Websocket/issues)
 
 # Fullstack Website
-Python backend, HTML / Css / Javaskript Frontend
-Imformationsaustausch mit socketio, render html mit Quart asyncron
+Python backend, HTML / Css / JavaScript Frontend
+Information exchange with socketio, render html with Quart asyncron
 
 ![Image](https://github.com/user-attachments/assets/765ef382-9ba0-4694-8ab2-6b7f212ed2aa)
 
@@ -17,16 +17,16 @@ Imformationsaustausch mit socketio, render html mit Quart asyncron
 > Press (Shift+right Mouse) here you want the Folder -> open Powershell Window here.
 
 ```bash
-git clone https://github.com/JanW42/Websocket.git
+git clone https://github.com/JanW42/Interactive-Real-Time-Web-App.WebSockets.git
 cd Interactive-Real-Time-Web-App.WebSockets
 ```
 **3. Create and activate a virtual environment (optional but recommended)**:
 > [!TIP]
-> Open the Websocket Folder with VSCode.
+> Open the Interactive-Real-Time-Web-App.WebSockets Folder with VSCode.
 > Open a new Terminal with (Ctrl+Shift+ö)de.
 
 ```bash
-python -3.10 -m venv VE   #"VE" is the name of the virtual Environment
+python -3.10 -m venv VE   # "VE" is the name of the virtual Environment
 or
 py -3.10 -m venv VE
 source VE/bin/activate    # for macOS / Linux
