@@ -18,7 +18,7 @@ Imformationsaustausch mit socketio, render html mit Quart asyncron
 
 ```bash
 git clone https://github.com/JanW42/Websocket.git
-cd Websocket
+cd Interactive-Real-Time-Web-App.WebSockets
 ```
 **3. Create and activate a virtual environment (optional but recommended)**:
 > [!TIP]
@@ -29,7 +29,7 @@ cd Websocket
 python -3.10 -m venv VE   #"VE" is the name of the virtual Environment
 or
 py -3.10 -m venv VE
-source ai/bin/activate    # for macOS / Linux
+source VE/bin/activate    # for macOS / Linux
 VE\Scripts\activate.bat   # for Windows using cmd
 VE\Scripts\activate.ps1   # for Windows using PowerShell
 ```
